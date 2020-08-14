@@ -42,6 +42,24 @@ const addTextToCache = (text) => {
     if (i < wordArr.length - 1) {
       let nextWord = wordArr[i + 1];
     }
+    if (i > 0) {
+      let prevWord = wordArr[i - 1];
+      if (!cache[prevWord]["wordAfterList"].includes(currWord)) {
+        cache[prevWord]["wordAfterList"].push(currWord);
+      }
+    }
+    if (!Object.keys(cache).includes(currWord)) {
+      let newWordObj = {};
+      newWordObj["wordAfterList"] = [];
+      newWordObj["indicator"] = indicate(currWord);
+      cache[currWord] = newWordObj;
+    } else {
+      if (nextWord) {
+        if (!cache[currWord]["wordAfterList"].includes(nextWord)) {
+          cache[currWord]["wordAfterList"].push(nextWord);
+        }
+      }
+    }
   }
 };
 
