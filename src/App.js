@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { sampleText } from "./sampleText.js";
+import generateSentences from "./MarkovsChain";
 
 function App() {
-  const [inputText, setInputText] = useState(sampleText);
+  const [inputText, setInputText] = useState(generateSentences(sampleText, 2));
 
   return (
     <div className="App">
-      <h1>something</h1>
+      <p>{inputText}</p>
     </div>
   );
 }
