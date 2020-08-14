@@ -33,7 +33,20 @@ const indicate = (word) => {
   }
 };
 
-const addTextToCache = (text) => {
+const getRandStart = () => {
+  allKeysArr = Object.keys(cache);
+  let indicator = 2;
+
+  while (indicator !== 0) {
+    randWord = allKeysArr[Math.floor(Math.random() * allKeysArr.length)];
+    indicator = cache[randWord]["indicator"];
+  }
+
+  return randWord;
+};
+
+const generateSentences = (text) => {
+  //=======populate cache with input text=======
   wordArr = text.split(" ");
 
   for (let i = 0; i < wordArr.length; i++) {
@@ -63,4 +76,4 @@ const addTextToCache = (text) => {
   }
 };
 
-export default addTextToCache;
+export default generateSentences;
