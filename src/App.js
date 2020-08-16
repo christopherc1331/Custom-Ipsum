@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <p style={{ "white-space": "pre-line" }}>{inputText}</p>
+      <p style={{ whiteSpace: "pre-line" }}>{inputText}</p>
     </div>
   );
 }
