@@ -63,6 +63,9 @@ const generateParagraphs = (text, requestedNumOfParagraphs) => {
   let nextWord = null;
   text = text.replace(/\n|\r/g, " ");
   let wordArr = text.split(" ");
+  wordArr = wordArr.filter((word) => {
+    return word !== "";
+  });
 
   for (let i = 0; i < wordArr.length; i++) {
     let currWord = wordArr[i];
@@ -96,7 +99,7 @@ const generateParagraphs = (text, requestedNumOfParagraphs) => {
   let paragraphArr = [];
 
   while (paragraphCount < requestedNumOfParagraphs) {
-    let numOfSentences = Math.floor(Math.random() * 7);
+    let numOfSentences = Math.floor(Math.random() * 7) + 1;
     let sentenceArr = [];
     let sentenceCount = 0;
     while (sentenceCount < numOfSentences) {
@@ -166,7 +169,6 @@ const generateParagraphs = (text, requestedNumOfParagraphs) => {
     }
     paragraphArr.push(sentenceArr.join(" "));
     paragraphCount += 1;
-    console.log("adding new para");
   }
   let outputText = paragraphArr.join("\n\n");
   return outputText;
