@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { sampleText } from "./sampleText.js";
-import generateSentences from "./MarkovsChain";
+import generateParagraphs from "./MarkovsChain";
 
 function App() {
-  const [inputText, setInputText] = useState(generateSentences(sampleText, 2));
+  const [inputText, setInputText] = useState(generateParagraphs(sampleText, 3));
 
   return (
     <div className="App">
-      <p>{inputText}</p>
+      <p style={{ "white-space": "pre-line" }}>{inputText}</p>
     </div>
   );
 }

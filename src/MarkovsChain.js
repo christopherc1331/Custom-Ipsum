@@ -12,12 +12,6 @@ const indicate = (word) => {
   const secondLetter = word[1];
   const lastLetter = word[word.length - 1];
   const secondToLastLetter = word[word.length - 2];
-  console.log("word", word);
-  console.log("firstLetter", firstLetter);
-  console.log("secondLetter", secondLetter);
-  console.log("lastLetter", lastLetter);
-  console.log("secondToLastLetter", secondToLastLetter);
-  console.log("upperArr", upperArr);
   if (word.length < 2 && upperArr.includes(firstLetter)) {
     return 0; // ===Start===
   } else if (
@@ -64,7 +58,7 @@ const wordincludesOddQuoteCount = (word) => {
   }
 };
 
-const generateSentences = (text, requestedNumOfSentences) => {
+const generateParagraphs = (text, requestedNumOfParagraphs) => {
   //=======populate cache with input text=======
   let nextWord = null;
   text = text.replace(/\n|\r/g, " ");
@@ -97,77 +91,85 @@ const generateSentences = (text, requestedNumOfSentences) => {
   }
 
   //=======chain words for number of sentences=======
-  let sentenceCount = 0;
-  let outputText = "";
 
-  while (sentenceCount < requestedNumOfSentences) {
-    let quoteStarted = false;
-    let sentenceStopped = false;
-    let currRandomWord = getRandStart();
-    outputText += currRandomWord + " ";
+  let paragraphCount = 0;
+  let paragraphArr = [];
 
-    // loop until you hit a word with a "stop" indicator in the cache
-    while (!sentenceStopped) {
-      // check if current word has an odd num of quotation marks
-      // if it does then check if the sentence is stopped
-      // switch the quotestarted bool on/off depending on whether the sentencce last started or ended a quote
-      if (wordincludesOddQuoteCount(currRandomWord) && quoteStarted === false) {
-        console.log("opening quote now");
-        quoteStarted = true;
-      } else if (
-        wordincludesOddQuoteCount(currRandomWord) &&
-        quoteStarted === true
-      ) {
-        console.log("closing quote now");
-        quoteStarted = false;
-      }
-      // get the current word object from the cache
-      let currWordObj = cache[currRandomWord];
-      // if there are words in the "wordAfterList" in the word object
-      // select a random word and reassign that to the currRandomWord var
-      if (currWordObj["wordAfterList"].length > 0) {
-        currRandomWord =
-          currWordObj["wordAfterList"][
-            Math.floor(Math.random() * currWordObj["wordAfterList"].length)
-          ];
-        outputText += currRandomWord + " ";
-        // if the current word has an indicator of 1, this is the stop value
-        // so stop the sentence and break the loop
-        if (cache[currRandomWord]["indicator"] === 1) {
+  while (paragraphCount < requestedNumOfParagraphs) {
+    let numOfSentences = Math.floor(Math.random() * 7);
+    let sentenceArr = [];
+    let sentenceCount = 0;
+    while (sentenceCount < numOfSentences) {
+      let currentSentence = "";
+      let quoteStarted = false;
+      let sentenceStopped = false;
+      let currRandomWord = getRandStart();
+      currentSentence += currRandomWord + " ";
+
+      // loop until you hit a word with a "stop" indicator in the cache
+      while (!sentenceStopped) {
+        // check if current word has an odd num of quotation marks
+        // if it does then check if the sentence is stopped
+        // switch the quoteStarted bool on/off depending on whether the sentencce last started or ended a quote
+        if (
+          wordincludesOddQuoteCount(currRandomWord) &&
+          quoteStarted === false
+        ) {
+          quoteStarted = true;
+        } //else if (
+        //   wordincludesOddQuoteCount(currRandomWord) &&
+        //   quoteStarted === true
+        // ) {
+        //   quoteStarted = false;
+        // }
+        // get the current word object from the cache
+        let currWordObj = cache[currRandomWord];
+        // if there are words in the "wordAfterList" in the word object
+        // select a random word and reassign that to the currRandomWord var
+        if (currWordObj["wordAfterList"].length > 0) {
+          currRandomWord =
+            currWordObj["wordAfterList"][
+              Math.floor(Math.random() * currWordObj["wordAfterList"].length)
+            ];
+          currentSentence += currRandomWord + " ";
+          // if the current word has an indicator of 1, this is the stop value
+          // so stop the sentence and break the loop
+          if (cache[currRandomWord]["indicator"] === 1) {
+            sentenceStopped = true;
+          }
+          // if there are no more words in the "wordAfterList" then stop
+          // the sentence and break the loop
+        } else {
           sentenceStopped = true;
           // since we've now broken the loop and completed the sentence
           // we should close the quote if it is currently open
           if (
             quoteStarted === true &&
+            !wordincludesOddQuoteCount(currRandomWord)
+          ) {
+            quoteStarted = false;
+            currentSentence += `"`;
+          } else if (
+            quoteStarted === true &&
             wordincludesOddQuoteCount(currRandomWord)
           ) {
-            outputText += `"`;
+            quoteStarted = false;
           }
         }
-        // if there are no more words in the "wordAfterList" then stop
-        // the sentence and break the loop
-      } else {
-        sentenceStopped = true;
-        // since we've now broken the loop and completed the sentence
-        // we should close the quote if it is currently open
-        if (
-          quoteStarted === true &&
-          !wordincludesOddQuoteCount(currRandomWord)
-        ) {
-          console.log("closing quote");
-          outputText += `"`;
-        }
       }
+      if (quoteStarted === true && !wordincludesOddQuoteCount(currRandomWord)) {
+        quoteStarted = false;
+        currentSentence += `"`;
+      }
+      sentenceArr.push(currentSentence);
+      sentenceCount += 1;
     }
-    if (quoteStarted === true && !wordincludesOddQuoteCount(currRandomWord)) {
-      console.log("closing quote");
-      quoteStarted = false;
-      outputText += `"`;
-    }
-    sentenceCount += 1;
-    outputText += "\n";
+    paragraphArr.push(sentenceArr.join(" "));
+    paragraphCount += 1;
+    console.log("adding new para");
   }
+  let outputText = paragraphArr.join("\n\n");
   return outputText;
 };
 
-export default generateSentences;
+export default generateParagraphs;
