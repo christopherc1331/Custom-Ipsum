@@ -114,6 +114,12 @@ const generateSentences = (text, requestedNumOfSentences) => {
       if (wordincludesOddQuoteCount(currRandomWord) && quoteStarted === false) {
         console.log("opening quote now");
         quoteStarted = true;
+      } else if (
+        wordincludesOddQuoteCount(currRandomWord) &&
+        quoteStarted === true
+      ) {
+        console.log("closing quote now");
+        quoteStarted = false;
       }
       // get the current word object from the cache
       let currWordObj = cache[currRandomWord];
@@ -146,13 +152,18 @@ const generateSentences = (text, requestedNumOfSentences) => {
         // we should close the quote if it is currently open
         if (
           quoteStarted === true &&
-          wordincludesOddQuoteCount(currRandomWord)
+          !wordincludesOddQuoteCount(currRandomWord)
         ) {
+          console.log("closing quote");
           outputText += `"`;
         }
       }
     }
-
+    if (quoteStarted === true && !wordincludesOddQuoteCount(currRandomWord)) {
+      console.log("closing quote");
+      quoteStarted = false;
+      outputText += `"`;
+    }
     sentenceCount += 1;
     outputText += "\n";
   }
