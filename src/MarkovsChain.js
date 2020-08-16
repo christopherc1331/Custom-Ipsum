@@ -18,23 +18,22 @@ const indicate = (word) => {
   console.log("lastLetter", lastLetter);
   console.log("secondToLastLetter", secondToLastLetter);
   console.log("upperArr", upperArr);
-  if (word.length < 2) {
-    if (upperArr.includes(firstLetter)) {
-      return 0; // ===Start===
-    } else {
-      if (firstLetter === '"' && upperArr.includes(secondLetter)) {
-        return 0;
-      } else if (endSentChars.includes(lastLetter)) {
-        return 1; // ===Stop===
-      } else if (
-        endSentChars.includes(secondToLastLetter) &&
-        (lastLetter === '"' || lastLetter === "'")
-      ) {
-        return 1;
-      } else {
-        return 2; // ===Middle===
-      }
-    }
+  if (word.length < 2 && upperArr.includes(firstLetter)) {
+    return 0; // ===Start===
+  } else if (
+    (firstLetter === '"' || firstLetter === "'") &&
+    upperArr.includes(secondLetter)
+  ) {
+    return 0;
+  } else if (endSentChars.includes(lastLetter)) {
+    return 1; // ===Stop===
+  } else if (
+    endSentChars.includes(secondToLastLetter) &&
+    (lastLetter === `"` || lastLetter === `'`)
+  ) {
+    return 1;
+  } else {
+    return 2; // ===Middle===
   }
 };
 
@@ -113,10 +112,8 @@ const generateSentences = (text, requestedNumOfSentences) => {
       // if it does then check if the sentence is stopped
       // switch the quotestarted bool on/off depending on whether the sentencce last started or ended a quote
       if (wordincludesOddQuoteCount(currRandomWord) && quoteStarted === false) {
+        console.log("opening quote now");
         quoteStarted = true;
-      }
-      if (wordincludesOddQuoteCount(currRandomWord) && quoteStarted === true) {
-        quoteStarted = false;
       }
       // get the current word object from the cache
       let currWordObj = cache[currRandomWord];
@@ -132,22 +129,34 @@ const generateSentences = (text, requestedNumOfSentences) => {
         // so stop the sentence and break the loop
         if (cache[currRandomWord]["indicator"] === 1) {
           sentenceStopped = true;
+          // since we've now broken the loop and completed the sentence
+          // we should close the quote if it is currently open
+          if (
+            quoteStarted === true &&
+            wordincludesOddQuoteCount(currRandomWord)
+          ) {
+            outputText += `"`;
+          }
         }
         // if there are no more words in the "wordAfterList" then stop
         // the sentence and break the loop
       } else {
         sentenceStopped = true;
+        // since we've now broken the loop and completed the sentence
+        // we should close the quote if it is currently open
+        if (
+          quoteStarted === true &&
+          wordincludesOddQuoteCount(currRandomWord)
+        ) {
+          outputText += `"`;
+        }
       }
     }
-    // since we've now broken the loop and completed the sentence
-    // we should close the quote if it is currently open
-    if (quoteStarted === true) {
-      outputText += '"';
-    }
+
     sentenceCount += 1;
+    outputText += "\n";
   }
-  outputText += ".";
-  outputText += "\n";
+  return outputText;
 };
 
 export default generateSentences;
