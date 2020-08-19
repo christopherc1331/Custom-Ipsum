@@ -1,3 +1,5 @@
+@import "~antd/dist/antd.css";
+
 .App {
   text-align: center;
 }
@@ -35,4 +37,14 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* header: #76856F */
+/* button: #BFBE9D */
+/* icon: #CAA578 */
+
+body {
+  background-color: #f4d8b8;
+  color: #46464b;
+  font-size: 1.25rem;
 }
