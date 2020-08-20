@@ -163,6 +163,8 @@ const generateParagraphs = (text, requestedNumOfParagraphs) => {
       if (quoteStarted === true && !wordincludesOddQuoteCount(currRandomWord)) {
         quoteStarted = false;
         currentSentence += `"`;
+      } else if (quoteStarted === true) {
+        quoteStarted = false;
       }
       sentenceArr.push(currentSentence);
       sentenceCount += 1;

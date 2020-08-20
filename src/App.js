@@ -10,8 +10,11 @@ function App() {
   return (
     <Container>
       <HeaderContainer>
-        <h1>Custom Ipsum</h1>
-        <h3>Create gibberish that makes sense to you!</h3>
+        <Top>
+          <h1>Custom Ipsum</h1>
+          <h3>Create gibberish that makes sense to you!</h3>
+        </Top>
+        <Bottom />
       </HeaderContainer>
       <BodyContainer>
         <Paragraphs>{inputText}</Paragraphs>
@@ -28,19 +31,28 @@ const Container = styled.div`
 
 const HeaderContainer = styled.div`
   width: 100%;
-  min-height: 3rem;
+  min-height: 9rem;
   margin-bottom: 1.5rem;
-  padding-left: 1rem;
   display: flex;
   flex-direction: column;
-  /* border: 1px solid black; */
-  background-color: #595958;
+  justify-content: space-around;
   h1,
   h3 {
     color: #6fb4b3;
   }
 `;
 
+const Top = styled.div`
+  width: inherit;
+  min-height: 7.5rem;
+  padding: 0.75rem 0 0 1.5rem;
+  background-color: #4b4b4c;
+`;
+const Bottom = styled.div`
+  width: inherit;
+  min-height: 1.5rem;
+  background-color: #595958;
+`;
 const BodyContainer = styled.div`
   padding: 0 1.5rem;
 `;
