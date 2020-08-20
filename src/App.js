@@ -34,10 +34,10 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   /* border: 1px solid black; */
-  background-color: #414972;
+  background-color: #595958;
   h1,
   h3 {
-    color: #a2ace8;
+    color: #6fb4b3;
   }
 `;
 
@@ -47,7 +47,6 @@ const BodyContainer = styled.div`
 
 const Paragraphs = styled.p`
   white-space: pre-line;
-  color: #735d4e;
 `;
 
 export default App;

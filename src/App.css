@@ -1,16 +1,31 @@
 @import "~antd/dist/antd.css";
 
+/* Old */
+
+/* paragraph: #735d4e */
+/* bkg color: #f0d2a0 */
 /* header: #414972 */
 /* header font: #A2ACE8 */
 /* button: #735D4E */
 /* button font: #DBC55A */
 /* icon: #DBC55A */
 
+/* New */
+
+/* paragraph: #282626 */
+/* bkg color: #F7E3B5 */
+/* header: #595958 */
+/* header font: #6FB4B3 */
+/* button: #4B4B4C */
+/* button font: #6FB4B3 */
+/* icon: #6FB4B3 */
+
 body {
-  background-color: #f0d2a0;
+  background-color: #f7e3b5;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 p {
   font-size: 1.1rem;
+  color: #282626;
 }
