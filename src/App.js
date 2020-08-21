@@ -67,9 +67,13 @@ const BodyContainer = styled.div`
 
 const ParagraphContainer = styled.div`
   height: 70vh;
-  width: 50%;
+  width: 55%;
+  padding: 1.25rem;
   margin-right: 5rem;
   overflow: hidden;
+  border: solid 3px #737373;
+  box-shadow: 8px 10px #4b4b4c;
+  background-color: #f6f7ed;
 `;
 
 const Paragraphs = styled.p`
