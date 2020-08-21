@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { sampleText } from "./sampleText.js";
 import "./App.css";
+import styled from "styled-components";
+import TextLoop from "react-text-loop";
+import { sampleText } from "./sampleText.js";
 import generateParagraphs from "./MarkovsChain";
 
 function App() {
-  const [inputText, setInputText] = useState(generateParagraphs(sampleText, 3));
+  const [paraCount, setParaCount] = useState(3);
+  const [inputText, setInputText] = useState(
+    generateParagraphs(sampleText, paraCount)
+  );
 
   return (
     <Container>
       <HeaderContainer>
         <Top>
           <h1>Custom Ipsum</h1>
-          <h3>Create gibberish that makes sense to you!</h3>
+          <TextLoop>
+            <h3>Your new favorite text filler!</h3>
+            <h3>Create gibberish that makes sense to you!</h3>
+          </TextLoop>
         </Top>
         <Bottom />
       </HeaderContainer>
       <BodyContainer>
+        <Controls>
+          <h2>{paraCount}</h2>
+        </Controls>
         <ParagraphContainer>
           <Paragraphs>{inputText}</Paragraphs>
         </ParagraphContainer>
@@ -63,6 +73,14 @@ const BodyContainer = styled.div`
   padding: 0 1.5rem;
   display: flex;
   justify-content: flex-end;
+`;
+
+const Controls = styled.div`
+  width: 45%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ParagraphContainer = styled.div`
