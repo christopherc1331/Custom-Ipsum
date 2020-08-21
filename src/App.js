@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
 import TextLoop from "react-text-loop";
+import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
 import generateParagraphs from "./MarkovsChain";
 
@@ -25,7 +26,13 @@ function App() {
       </HeaderContainer>
       <BodyContainer>
         <Controls>
-          <h2>{paraCount}</h2>
+          <ParaControlContainer>
+            <CaretContainer>
+              <CaretUpOutlined />
+              <CaretDownOutlined />
+            </CaretContainer>
+            <h2>{`Number of paragraphs:  ${paraCount}`}</h2>
+          </ParaControlContainer>
         </Controls>
         <ParagraphContainer>
           <Paragraphs>{inputText}</Paragraphs>
@@ -78,9 +85,22 @@ const BodyContainer = styled.div`
 const Controls = styled.div`
   width: 45%;
   height: 70vh;
+  padding-top: 1rem;
+  margin-right: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ParaControlContainer = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const CaretContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const ParagraphContainer = styled.div`
