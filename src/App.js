@@ -17,7 +17,9 @@ function App() {
         <Bottom />
       </HeaderContainer>
       <BodyContainer>
-        <Paragraphs>{inputText}</Paragraphs>
+        <ParagraphContainer>
+          <Paragraphs>{inputText}</Paragraphs>
+        </ParagraphContainer>
       </BodyContainer>
     </Container>
   );
@@ -25,7 +27,7 @@ function App() {
 
 const Container = styled.div`
   margin: 0 auto;
-  max-height: 100vh;
+  height: 100vh;
   overflow-y: hidden;
 `;
 
@@ -38,7 +40,11 @@ const HeaderContainer = styled.div`
   justify-content: space-around;
   h1,
   h3 {
-    color: #6fb4b3;
+    color: #f6f4ec;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-family: Impact, Charcoal, "Arial Narrow Bold", sans-serif;
   }
 `;
 
@@ -55,10 +61,24 @@ const Bottom = styled.div`
 `;
 const BodyContainer = styled.div`
   padding: 0 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const ParagraphContainer = styled.div`
+  height: 70vh;
+  width: 50%;
+  margin-right: 5rem;
+  overflow: hidden;
 `;
 
 const Paragraphs = styled.p`
   white-space: pre-line;
+  height: 100%;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export default App;
