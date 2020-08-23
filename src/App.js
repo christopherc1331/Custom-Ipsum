@@ -5,12 +5,21 @@ import TextLoop from "react-text-loop";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
 import generateParagraphs from "./MarkovsChain";
+import { Button } from "antd";
 
 function App() {
   const [paraCount, setParaCount] = useState(3);
-  const [inputText, setInputText] = useState(
+  const [displayText, setDisplayText] = useState(
     generateParagraphs(sampleText, paraCount)
   );
+
+  const getParagraph = (text) => {
+    setDisplayText(generateParagraphs(text, paraCount));
+  };
+
+  // useEffect(() => {
+
+  // },[])
 
   return (
     <Container>
@@ -28,14 +37,27 @@ function App() {
         <Controls>
           <ParaControlContainer>
             <CaretContainer>
-              <CaretUpOutlined />
-              <CaretDownOutlined />
+              <CaretUpOutlined
+                onClick={() => setParaCount(paraCount + 1)}
+                style={{ fontSize: "30px" }}
+              />
+              <CaretDownOutlined
+                onClick={() => setParaCount(paraCount - 1)}
+                style={{ fontSize: "30px" }}
+              />
             </CaretContainer>
             <h2>{`Number of paragraphs:  ${paraCount}`}</h2>
           </ParaControlContainer>
+          <Button
+            type="Primary"
+            ghost
+            onClick={() => getParagraph(displayText)}
+          >
+            Click Me!
+          </Button>
         </Controls>
         <ParagraphContainer>
-          <Paragraphs>{inputText}</Paragraphs>
+          <Paragraphs>{displayText}</Paragraphs>
         </ParagraphContainer>
       </BodyContainer>
     </Container>
@@ -90,12 +112,17 @@ const Controls = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  button {
+    color: #4b4b4c;
+    border: solid 1px #4b4b4c;
+  }
 `;
 
 const ParaControlContainer = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-around;
+  align-items: center;
 `;
 
 const CaretContainer = styled.div`
@@ -110,6 +137,7 @@ const ParagraphContainer = styled.div`
   margin-right: 5rem;
   overflow: hidden;
   border: solid 3px #737373;
+  border-radius: 3px;
   box-shadow: 8px 10px #4b4b4c;
   background-color: #f6f7ed;
 `;
