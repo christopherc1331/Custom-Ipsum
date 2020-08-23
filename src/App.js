@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
 import TextLoop from "react-text-loop";
-import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
+import {
+  CaretUpOutlined,
+  CaretDownOutlined,
+  CopyOutlined,
+} from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
@@ -12,14 +16,27 @@ function App() {
   const [displayText, setDisplayText] = useState(
     generateParagraphs(sampleText, paraCount)
   );
-
-  const getParagraph = (text) => {
-    setDisplayText(generateParagraphs(text, paraCount));
+  const [oldText, setOldText] = useState(displayText);
+  const [copyText, setCopyText] = useState("Copy");
+  const getParagraph = () => {
+    setDisplayText(generateParagraphs(sampleText, paraCount));
   };
 
-  // useEffect(() => {
-
-  // },[])
+  const copyCurrentText = () => {
+    setCopyText("Copied To Clipboard!");
+    setTimeout(() => {
+      setCopyText("Copy");
+    }, 3000);
+    const el = document.createElement("textarea");
+    el.value = displayText;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+  };
 
   return (
     <Container>
@@ -48,17 +65,19 @@ function App() {
             </CaretContainer>
             <h2>{`Number of paragraphs:  ${paraCount}`}</h2>
           </ParaControlContainer>
-          <Button
-            type="Primary"
-            ghost
-            onClick={() => getParagraph(displayText)}
-          >
-            Click Me!
+          <Button type="Primary" onClick={() => getParagraph(displayText)}>
+            Generate Another Paragraph
           </Button>
         </Controls>
-        <ParagraphContainer>
-          <Paragraphs>{displayText}</Paragraphs>
-        </ParagraphContainer>
+        <Right>
+          <CopyContainer onClick={() => copyCurrentText()}>
+            <CopyOutlined style={{ fontSize: "30px" }} />
+            <h4>{copyText}</h4>
+          </CopyContainer>
+          <ParagraphContainer>
+            <Paragraphs>{displayText}</Paragraphs>
+          </ParagraphContainer>
+        </Right>
       </BodyContainer>
     </Container>
   );
@@ -105,7 +124,7 @@ const BodyContainer = styled.div`
 `;
 
 const Controls = styled.div`
-  width: 45%;
+  width: 35%;
   height: 70vh;
   padding-top: 1rem;
   margin-right: 1rem;
@@ -113,7 +132,8 @@ const Controls = styled.div`
   flex-direction: column;
   align-items: center;
   button {
-    color: #4b4b4c;
+    background-color: #4b4b4c;
+    color: #f6f4ec;
     border: solid 1px #4b4b4c;
   }
 `;
@@ -121,6 +141,7 @@ const Controls = styled.div`
 const ParaControlContainer = styled.div`
   width: 80%;
   display: flex;
+  margin-bottom: 4rem;
   justify-content: space-around;
   align-items: center;
 `;
@@ -130,9 +151,33 @@ const CaretContainer = styled.div`
   flex-direction: column;
 `;
 
-const ParagraphContainer = styled.div`
-  height: 70vh;
+const Right = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
   width: 55%;
+`;
+
+const CopyContainer = styled.div`
+  margin-bottom: 0.3rem;
+  height: 8%;
+  width: 4.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h4 {
+    transition: color 0.5s ease;
+    color: transparent;
+  }
+  :hover {
+    h4 {
+      color: black;
+    }
+  }
+`;
+
+const ParagraphContainer = styled.div`
+  height: 80%;
   padding: 1.25rem;
   margin-right: 5rem;
   overflow: hidden;
