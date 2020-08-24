@@ -63,10 +63,15 @@ function App() {
                 style={{ fontSize: "30px" }}
               />
             </CaretContainer>
-            <h2>{`Number of paragraphs:  ${paraCount}`}</h2>
+            <h2>
+              Number of paragraphs:
+              <span>{`  ${paraCount}`}</span>
+            </h2>
           </ParaControlContainer>
           <Button type="Primary" onClick={() => getParagraph(displayText)}>
-            Generate Another Paragraph
+            {`Generate ${
+              paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
+            }`}
           </Button>
         </Controls>
         <Right>
@@ -120,30 +125,50 @@ const Bottom = styled.div`
 const BodyContainer = styled.div`
   padding: 0 1.5rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  width: 100%;
 `;
 
 const Controls = styled.div`
   width: 35%;
   height: 70vh;
   padding-top: 1rem;
-  margin-right: 1rem;
+  margin-right: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   button {
+    max-width: 60%;
+    margin-left: 4rem;
     background-color: #4b4b4c;
     color: #f6f4ec;
     border: solid 1px #4b4b4c;
+    transition: all 0.2s ease-in-out;
+    :hover {
+      transform: scale(1.1);
+      background-color: #f6f4ec;
+      color: #4b4b4c;
+      border: solid 1px #4b4b4c;
+    }
+    :active,
+    :focus,
+    :visited {
+      background-color: #fcf3cf;
+      color: #4b4b4c;
+      border: solid 1px #4b4b4c;
+    }
   }
 `;
 
 const ParaControlContainer = styled.div`
-  width: 80%;
+  width: 65%;
   display: flex;
   margin-bottom: 4rem;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  span {
+    font-weight: bold;
+  }
 `;
 
 const CaretContainer = styled.div`
@@ -156,6 +181,7 @@ const Right = styled.div`
   flex-direction: column;
   height: 75vh;
   width: 55%;
+  justify-self: flex-end;
 `;
 
 const CopyContainer = styled.div`
