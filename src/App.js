@@ -10,6 +10,7 @@ import {
 import { sampleText } from "./sampleText.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
+import Select from "react-select";
 
 function App() {
   const [paraCount, setParaCount] = useState(3);
@@ -21,6 +22,8 @@ function App() {
   const getParagraph = () => {
     setDisplayText(generateParagraphs(sampleText, paraCount));
   };
+
+  const [choice, setChoice] = useState("");
 
   const copyCurrentText = () => {
     setCopyText("Copied To Clipboard!");
@@ -37,6 +40,32 @@ function App() {
     document.execCommand("copy");
     document.body.removeChild(el);
   };
+
+  const options = [
+    { value: "Custom", label: "Custom" },
+    { value: "Type1", label: "Type1" },
+    { value: "Type2", label: "Type2" },
+  ];
+
+  const customStyles = {
+    option: (provided) => ({
+      ...provided,
+      backgroundColor: "#f6f7ed",
+      color: "#282626",
+    }),
+    container: (provided) => ({
+      ...provided,
+      backgroundColor: "#f6f7ed",
+      color: "#282626",
+      width: "58%",
+    }),
+  };
+
+  const changeHandler = (value) => {
+    setChoice(value.value);
+    return value.value;
+  };
+  console.log("setting this value", choice);
 
   return (
     <Container>
@@ -65,7 +94,7 @@ function App() {
             </CaretContainer>
             <h2>
               Number of paragraphs:
-              <span>{`  ${paraCount}`}</span>
+              <span>{`   ${paraCount}`}</span>
             </h2>
           </ParaControlContainer>
           <Button type="Primary" onClick={() => getParagraph(displayText)}>
@@ -73,6 +102,14 @@ function App() {
               paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
             }`}
           </Button>
+          <SelectContainer>
+            <Select
+              styles={customStyles}
+              options={options}
+              onChange={(newVal) => changeHandler(newVal)}
+            />
+          </SelectContainer>
+          <CustomInput placeholder="Paste Custom Text Here!" />
         </Controls>
         <Right>
           <CopyContainer onClick={() => copyCurrentText()}>
@@ -138,8 +175,9 @@ const Controls = styled.div`
   flex-direction: column;
   /* align-items: center; */
   button {
-    max-width: 60%;
+    max-width: 50%;
     margin-left: 4rem;
+    margin-bottom: 4rem;
     background-color: #4b4b4c;
     color: #f6f4ec;
     border: solid 1px #4b4b4c;
@@ -158,6 +196,10 @@ const Controls = styled.div`
       border: solid 1px #4b4b4c;
     }
   }
+`;
+
+const SelectContainer = styled.div`
+  margin-left: 3.8rem;
 `;
 
 const ParaControlContainer = styled.div`
@@ -191,6 +233,9 @@ const CopyContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  span:hover {
+    cursor: pointer;
+  }
   h4 {
     transition: color 0.5s ease;
     color: transparent;
@@ -215,6 +260,33 @@ const ParagraphContainer = styled.div`
 
 const Paragraphs = styled.p`
   white-space: pre-line;
+  height: 100%;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ParagraphSmallContainer = styled.div`
+  height: 13%;
+  padding: 1.25rem;
+  margin-right: 5rem;
+  margin-top: 4rem;
+
+  border: solid 3px #737373;
+  border-radius: 3px;
+  background-color: #f6f7ed;
+`;
+
+const CustomInput = styled.input`
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const ParagraphTest = styled.p`
+  white-space: nowrap;
   height: 100%;
   overflow: scroll;
   ::-webkit-scrollbar {
