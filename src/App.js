@@ -11,6 +11,7 @@ import { sampleText } from "./sampleText.js";
 import { toshiba } from "./toshiba.js";
 import { zenOfPython } from "./zenOfPython.js";
 import { romeoAndJuliet } from "./romeoAndJuliet.js";
+import { harryPotter } from "./harryPotter.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
 import Select from "react-select";
@@ -18,12 +19,12 @@ import Select from "react-select";
 function App() {
   const [paraCount, setParaCount] = useState(3);
   const [displayText, setDisplayText] = useState(
-    generateParagraphs(sampleText, paraCount)
+    generateParagraphs(toshiba, paraCount)
   );
-  const [oldText, setOldText] = useState(displayText);
+  // const [oldText, setOldText] = useState(displayText);
   const [copyText, setCopyText] = useState("Copy");
-  const getParagraph = () => {
-    setDisplayText(generateParagraphs(sampleText, paraCount));
+  const getParagraph = (inputText) => {
+    setDisplayText(generateParagraphs(inputText, paraCount));
   };
 
   const [choice, setChoice] = useState("");
@@ -45,12 +46,20 @@ function App() {
   };
 
   const options = [
-    { value: "ZenOfPython", label: "Zen Of Python (Tim Peters)" },
+    { value: zenOfPython, label: "Zen Of Python (Tim Peters)" },
     {
-      value: "HarryPotter",
+      value: harryPotter,
       label: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
     },
-    { value: "Toshiba", label: "TV - Operating Instructions (Toshiba)" },
+    { value: toshiba, label: "TV - Operating Instructions (Toshiba)" },
+    {
+      value: romeoAndJuliet,
+      label: "The Tragedy of Romeo and Juliet (Shakespeare) ",
+    },
+    {
+      value: "TESTING",
+      label: "Custom Text (Your Choice!) ",
+    },
   ];
 
   const customStyles = {
@@ -69,9 +78,12 @@ function App() {
 
   const changeHandler = (value) => {
     setChoice(value.value);
+    setDisplayText(generateParagraphs(value.value, paraCount));
     return value.value;
   };
-  console.log("setting this value", choice);
+
+  console.log("Choice", choice);
+  console.log("displayText", displayText);
 
   return (
     <Container>
