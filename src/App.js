@@ -8,6 +8,9 @@ import {
   CopyOutlined,
 } from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
+import { toshiba } from "./toshiba.js";
+import { zenOfPython } from "./zenOfPython.js";
+import { romeoAndJuliet } from "./romeoAndJuliet.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
 import Select from "react-select";
@@ -42,9 +45,12 @@ function App() {
   };
 
   const options = [
-    { value: "Custom", label: "Custom" },
-    { value: "Type1", label: "Type1" },
-    { value: "Type2", label: "Type2" },
+    { value: "ZenOfPython", label: "Zen Of Python (Tim Peters)" },
+    {
+      value: "HarryPotter",
+      label: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
+    },
+    { value: "Toshiba", label: "TV - Operating Instructions (Toshiba)" },
   ];
 
   const customStyles = {
