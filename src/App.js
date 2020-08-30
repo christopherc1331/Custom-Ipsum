@@ -7,11 +7,11 @@ import {
   CaretDownOutlined,
   CopyOutlined,
 } from "@ant-design/icons";
-// import { sampleText } from "./sampleText.js";
-// import { toshiba } from "./toshiba.js";
+import { sampleText } from "./sampleText.js";
+import { toshiba } from "./toshiba.js";
 // import { zenOfPython } from "./zenOfPython.js";
 // import { romeoAndJuliet } from "./romeoAndJuliet.js";
-import { harryPotter } from "./harryPotter.js";
+// import { harryPotter } from "./harryPotter.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
 import Select from "react-select";
@@ -19,7 +19,7 @@ import Select from "react-select";
 function App() {
   const [paraCount, setParaCount] = useState(3);
   const [displayText, setDisplayText] = useState(
-    generateParagraphs(harryPotter, paraCount)
+    generateParagraphs(toshiba, paraCount)
   );
   // const [oldText, setOldText] = useState(displayText);
   const [copyText, setCopyText] = useState("Copy");
@@ -88,7 +88,6 @@ function App() {
   const changeHandler = (value) => {
     setChoice(value.value);
     console.log("value being set |", value.value);
-    setDisplayText(generateParagraphs(value.value, paraCount));
     return value.value;
   };
 

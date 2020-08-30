@@ -1,64 +1,64 @@
 import React from "react";
 
-const alphaLower = "abcdefghijklmnopqrstuvwxyz";
-const alphaUpper = alphaLower.toUpperCase();
-const lowerArr = alphaLower.split("");
-const upperArr = alphaUpper.split("");
-const endSentChars = [".", "?", "!"];
-let cache = {};
-
-const indicate = (word) => {
-  const firstLetter = word[0];
-  const secondLetter = word[1];
-  const lastLetter = word[word.length - 1];
-  const secondToLastLetter = word[word.length - 2];
-  if (word.length < 2 && upperArr.includes(firstLetter)) {
-    return 0; // ===Start===
-  } else if (
-    (firstLetter === '"' || firstLetter === "'") &&
-    upperArr.includes(secondLetter)
-  ) {
-    return 0;
-  } else if (endSentChars.includes(lastLetter)) {
-    return 1; // ===Stop===
-  } else if (
-    endSentChars.includes(secondToLastLetter) &&
-    (lastLetter === `"` || lastLetter === `'`)
-  ) {
-    return 1;
-  } else {
-    return 2; // ===Middle===
-  }
-};
-
-const getRandStart = () => {
-  let allKeysArr = Object.keys(cache);
-  let randWord = allKeysArr[Math.floor(Math.random() * allKeysArr.length)];
-  let indicator = cache[randWord]["indicator"];
-
-  while (indicator !== 0) {
-    randWord = allKeysArr[Math.floor(Math.random() * allKeysArr.length)];
-    indicator = cache[randWord]["indicator"];
-  }
-
-  return randWord;
-};
-
-const wordincludesOddQuoteCount = (word) => {
-  let quoteCount = 0;
-  for (let i = 0; i < word.length; i++) {
-    if (word[i] === '"') {
-      quoteCount += 1;
-    }
-  }
-  if (quoteCount % 2 !== 0) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 const generateParagraphs = (text, requestedNumOfParagraphs) => {
+  const alphaLower = "abcdefghijklmnopqrstuvwxyz";
+  const alphaUpper = alphaLower.toUpperCase();
+  const lowerArr = alphaLower.split("");
+  const upperArr = alphaUpper.split("");
+  const endSentChars = [".", "?", "!"];
+  let cache = {};
+
+  const indicate = (word) => {
+    const firstLetter = word[0];
+    const secondLetter = word[1];
+    const lastLetter = word[word.length - 1];
+    const secondToLastLetter = word[word.length - 2];
+    if (word.length < 2 && upperArr.includes(firstLetter)) {
+      return 0; // ===Start===
+    } else if (
+      (firstLetter === '"' || firstLetter === "'") &&
+      upperArr.includes(secondLetter)
+    ) {
+      return 0;
+    } else if (endSentChars.includes(lastLetter)) {
+      return 1; // ===Stop===
+    } else if (
+      endSentChars.includes(secondToLastLetter) &&
+      (lastLetter === `"` || lastLetter === `'`)
+    ) {
+      return 1;
+    } else {
+      return 2; // ===Middle===
+    }
+  };
+
+  const getRandStart = () => {
+    let allKeysArr = Object.keys(cache);
+    let randWord = allKeysArr[Math.floor(Math.random() * allKeysArr.length)];
+    let indicator = cache[randWord]["indicator"];
+
+    while (indicator !== 0) {
+      randWord = allKeysArr[Math.floor(Math.random() * allKeysArr.length)];
+      indicator = cache[randWord]["indicator"];
+    }
+
+    return randWord;
+  };
+
+  const wordincludesOddQuoteCount = (word) => {
+    let quoteCount = 0;
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === '"') {
+        quoteCount += 1;
+      }
+    }
+    if (quoteCount % 2 !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   //=======populate cache with input text=======
   let nextWord = null;
   text = text.replace(/\n|\r/g, " ");
