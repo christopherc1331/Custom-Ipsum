@@ -17,9 +17,33 @@ import { Button } from "antd";
 import Select from "react-select";
 
 function App() {
-  const [paraCount, setParaCount] = useState(3);
+  const [custom, setCustom] = useState("");
+  const textOptions = {
+    romeoAndJuliet: {
+      text: romeoAndJuliet,
+      desc: "The Tragedy of Romeo and Juliet (Shakespeare)",
+    },
+    zenOfPython: {
+      text: zenOfPython,
+      desc: "Zen Of Python (Tim Peters)",
+    },
+    harryPotter: {
+      text: harryPotter,
+      desc: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
+    },
+    toshiba: {
+      text: toshiba,
+      desc: "TV - Operating Instructions (Toshiba)",
+    },
+    custom: {
+      text: custom,
+      desc: "Custom Text (Your Choice!)",
+    },
+  };
+  const [paraCount, setParaCount] = useState(6);
+  const [choice, setChoice] = useState("romeoAndJuliet");
   const [displayText, setDisplayText] = useState(
-    generateParagraphs(toshiba, paraCount)
+    generateParagraphs(textOptions[choice]["text"], paraCount)
   );
   // const [oldText, setOldText] = useState(displayText);
   const [copyText, setCopyText] = useState("Copy");
@@ -27,46 +51,17 @@ function App() {
     setDisplayText(generateParagraphs(inputText, paraCount));
   };
 
-  const [choice, setChoice] = useState("toshiba");
-  const [choiceDesc, setChoiceDesc] = useState(
-    "TV - Operating Instructions (Toshiba)"
-  );
-  const [custom, setCustom] = useState("");
-
-  const textOptions = {
-    toshiba: {
-      text: toshiba,
-      desc: "TV - Operating Instructions (Toshiba)",
-    },
-    zenOfPython: {
-      text: zenOfPython,
-      desc: "Zen Of Python (Tim Peters)",
-    },
-    romeoAndJuliet: {
-      text: romeoAndJuliet,
-      desc: "The Tragedy of Romeo and Juliet (Shakespeare)",
-    },
-    harryPotter: {
-      text: harryPotter,
-      desc: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
-    },
-    custom: {
-      text: custom,
-      desc: "Custom Text (Your Choice!)",
-    },
-  };
-
   const options = [
-    { value: "zenOfPython", label: "Zen Of Python (Tim Peters)" },
-    {
-      value: "harryPotter",
-      label: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
-    },
-    { value: "toshiba", label: "TV - Operating Instructions (Toshiba)" },
     {
       value: "romeoAndJuliet",
-      label: "The Tragedy of Romeo and Juliet (Shakespeare)",
+      label: "Romeo and Juliet (Shakespeare)",
     },
+    {
+      value: "harryPotter",
+      label: "Harry Potter (JK Rowling)",
+    },
+    { value: "zenOfPython", label: "Zen Of Python (Tim Peters)" },
+    { value: "toshiba", label: "TV - Operating Instructions (Toshiba)" },
     {
       value: "custom",
       label: "Custom Text (Your Choice!)",
@@ -294,6 +289,7 @@ const Right = styled.div`
 
 const ParagraphTopBar = styled.div`
   width: 80%;
+  height: 4rem;
   display: flex;
   align-items: center;
   h2 {
@@ -303,8 +299,7 @@ const ParagraphTopBar = styled.div`
 
 const CopyContainer = styled.div`
   margin-bottom: 0.3rem;
-  height: 8%;
-  width: 4.5rem;
+  width: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
