@@ -6,6 +6,7 @@ import {
   CaretUpOutlined,
   CaretDownOutlined,
   CopyOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
 import { toshiba } from "./toshiba.js";
@@ -21,7 +22,7 @@ function App() {
   const textOptions = {
     romeoAndJuliet: {
       text: romeoAndJuliet,
-      desc: "The Tragedy of Romeo and Juliet (Shakespeare)",
+      desc: "Romeo and Juliet (Shakespeare)",
     },
     zenOfPython: {
       text: zenOfPython,
@@ -29,7 +30,7 @@ function App() {
     },
     harryPotter: {
       text: harryPotter,
-      desc: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
+      desc: "Harry Potter (JK Rowling)",
     },
     toshiba: {
       text: toshiba,
@@ -45,11 +46,12 @@ function App() {
   const [displayText, setDisplayText] = useState(
     generateParagraphs(textOptions[choice]["text"], paraCount)
   );
-  // const [oldText, setOldText] = useState(displayText);
+
   const [copyText, setCopyText] = useState("Copy");
   const getParagraph = (inputText) => {
     setDisplayText(generateParagraphs(inputText, paraCount));
   };
+  const [loading, setLoading] = useState(false);
 
   const options = [
     {
@@ -177,7 +179,7 @@ function App() {
             <h2>{textOptions[choice]["desc"]}</h2>
           </ParagraphTopBar>
           <ParagraphContainer>
-            <Paragraphs>{displayText}</Paragraphs>
+            {loading ? LoadingOutlined : <Paragraphs>{displayText}</Paragraphs>}
           </ParagraphContainer>
         </Right>
       </BodyContainer>
@@ -293,7 +295,7 @@ const ParagraphTopBar = styled.div`
   display: flex;
   align-items: center;
   h2 {
-    padding-left: 10rem;
+    padding-left: 4rem;
   }
 `;
 
