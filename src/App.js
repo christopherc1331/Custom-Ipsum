@@ -6,6 +6,7 @@ import {
   CaretUpOutlined,
   CaretDownOutlined,
   CopyOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
 import { toshiba } from "./toshiba.js";
@@ -17,17 +18,78 @@ import { Button } from "antd";
 import Select from "react-select";
 
 function App() {
-  const [paraCount, setParaCount] = useState(3);
+  const [custom, setCustom] = useState("");
+  const textOptions = {
+    romeoAndJuliet: {
+      text: romeoAndJuliet,
+      desc: "Romeo and Juliet (Shakespeare)",
+    },
+    zenOfPython: {
+      text: zenOfPython,
+      desc: "Zen Of Python (Tim Peters)",
+    },
+    harryPotter: {
+      text: harryPotter,
+      desc: "Harry Potter (JK Rowling)",
+    },
+    toshiba: {
+      text: toshiba,
+      desc: "TV - Operating Instructions (Toshiba)",
+    },
+    custom: {
+      text: custom,
+      desc: "Custom Text (Your Choice!)",
+    },
+  };
+  const [paraCount, setParaCount] = useState(6);
+  const [choice, setChoice] = useState("romeoAndJuliet");
   const [displayText, setDisplayText] = useState(
-    generateParagraphs(toshiba, paraCount)
+    generateParagraphs(textOptions[choice]["text"], paraCount)
   );
-  // const [oldText, setOldText] = useState(displayText);
+
   const [copyText, setCopyText] = useState("Copy");
   const getParagraph = (inputText) => {
     setDisplayText(generateParagraphs(inputText, paraCount));
   };
+  const [loading, setLoading] = useState(false);
 
-  const [choice, setChoice] = useState("");
+  const options = [
+    {
+      value: "romeoAndJuliet",
+      label: "Romeo and Juliet (Shakespeare)",
+    },
+    {
+      value: "harryPotter",
+      label: "Harry Potter (JK Rowling)",
+    },
+    { value: "zenOfPython", label: "Zen Of Python (Tim Peters)" },
+    { value: "toshiba", label: "TV - Operating Instructions (Toshiba)" },
+    {
+      value: "custom",
+      label: "Custom Text (Your Choice!)",
+    },
+  ];
+
+  const inputChangeHandler = (e) => {
+    setCustom(e.target.value);
+  };
+
+  const changeHandler = (value) => {
+    setChoice(value.value);
+    return value.value;
+  };
+
+  const submitForm = () => {
+    if (choice !== "custom") {
+      getParagraph(textOptions[choice]["text"]);
+    } else {
+      if (custom === "") {
+        window.alert("Please add some text to the 'Custom Text' box.");
+      } else {
+        getParagraph(textOptions[choice]["text"]);
+      }
+    }
+  };
 
   const copyCurrentText = () => {
     setCopyText("Copied To Clipboard!");
@@ -45,23 +107,6 @@ function App() {
     document.body.removeChild(el);
   };
 
-  const options = [
-    { value: zenOfPython, label: "Zen Of Python (Tim Peters)" },
-    {
-      value: harryPotter,
-      label: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
-    },
-    { value: toshiba, label: "TV - Operating Instructions (Toshiba)" },
-    {
-      value: romeoAndJuliet,
-      label: "The Tragedy of Romeo and Juliet (Shakespeare) ",
-    },
-    {
-      value: "TESTING",
-      label: "Custom Text (Your Choice!) ",
-    },
-  ];
-
   const customStyles = {
     option: (provided) => ({
       ...provided,
@@ -72,18 +117,9 @@ function App() {
       ...provided,
       backgroundColor: "#f6f7ed",
       color: "#282626",
-      width: "58%",
+      width: "62%",
     }),
   };
-
-  const changeHandler = (value) => {
-    setChoice(value.value);
-    setDisplayText(generateParagraphs(value.value, paraCount));
-    return value.value;
-  };
-
-  console.log("Choice", choice);
-  console.log("displayText", displayText);
 
   return (
     <Container>
@@ -115,11 +151,6 @@ function App() {
               <span>{`   ${paraCount}`}</span>
             </h2>
           </ParaControlContainer>
-          <Button type="Primary" onClick={() => getParagraph(displayText)}>
-            {`Generate ${
-              paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
-            }`}
-          </Button>
           <SelectContainer>
             <Select
               styles={customStyles}
@@ -127,15 +158,28 @@ function App() {
               onChange={(newVal) => changeHandler(newVal)}
             />
           </SelectContainer>
-          <CustomInput placeholder="Paste Custom Text Here!" />
+          <CustomInput
+            display={choice === "custom" ? "block" : "none"}
+            onChange={(e) => inputChangeHandler(e)}
+            value={custom}
+            placeholder="Paste Custom Text Here!"
+          />
+          <Button type="Primary" onClick={() => submitForm()}>
+            {`Generate ${
+              paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
+            }`}
+          </Button>
         </Controls>
         <Right>
-          <CopyContainer onClick={() => copyCurrentText()}>
-            <CopyOutlined style={{ fontSize: "30px" }} />
-            <h4>{copyText}</h4>
-          </CopyContainer>
+          <ParagraphTopBar>
+            <CopyContainer onClick={() => copyCurrentText()}>
+              <CopyOutlined style={{ fontSize: "30px" }} />
+              <h4>{copyText}</h4>
+            </CopyContainer>
+            <h2>{textOptions[choice]["desc"]}</h2>
+          </ParagraphTopBar>
           <ParagraphContainer>
-            <Paragraphs>{displayText}</Paragraphs>
+            {loading ? LoadingOutlined : <Paragraphs>{displayText}</Paragraphs>}
           </ParagraphContainer>
         </Right>
       </BodyContainer>
@@ -194,7 +238,7 @@ const Controls = styled.div`
   /* align-items: center; */
   button {
     max-width: 50%;
-    margin-left: 4rem;
+    margin-left: 7rem;
     margin-bottom: 4rem;
     background-color: #4b4b4c;
     color: #f6f4ec;
@@ -217,7 +261,8 @@ const Controls = styled.div`
 `;
 
 const SelectContainer = styled.div`
-  margin-left: 3.8rem;
+  margin-left: 7rem;
+  margin-bottom: 4rem;
 `;
 
 const ParaControlContainer = styled.div`
@@ -244,10 +289,19 @@ const Right = styled.div`
   justify-self: flex-end;
 `;
 
+const ParagraphTopBar = styled.div`
+  width: 80%;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  h2 {
+    padding-left: 4rem;
+  }
+`;
+
 const CopyContainer = styled.div`
   margin-bottom: 0.3rem;
-  height: 8%;
-  width: 4.5rem;
+  width: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -285,31 +339,14 @@ const Paragraphs = styled.p`
   }
 `;
 
-const ParagraphSmallContainer = styled.div`
-  height: 13%;
-  padding: 1.25rem;
-  margin-right: 5rem;
-  margin-top: 4rem;
-
-  border: solid 3px #737373;
-  border-radius: 3px;
-  background-color: #f6f7ed;
-`;
-
 const CustomInput = styled.input`
+  display: ${(props) => props.display};
   width: 200px;
+  margin-left: 7rem;
+  margin-bottom: 4rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`;
-
-const ParagraphTest = styled.p`
-  white-space: nowrap;
-  height: 100%;
-  overflow: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export default App;
