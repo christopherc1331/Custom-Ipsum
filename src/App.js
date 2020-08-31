@@ -9,9 +9,9 @@ import {
 } from "@ant-design/icons";
 import { sampleText } from "./sampleText.js";
 import { toshiba } from "./toshiba.js";
-// import { zenOfPython } from "./zenOfPython.js";
-// import { romeoAndJuliet } from "./romeoAndJuliet.js";
-// import { harryPotter } from "./harryPotter.js";
+import { zenOfPython } from "./zenOfPython.js";
+import { romeoAndJuliet } from "./romeoAndJuliet.js";
+import { harryPotter } from "./harryPotter.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
 import Select from "react-select";
@@ -30,13 +30,13 @@ function App() {
   const [choice, setChoice] = useState("");
   const [custom, setCustom] = useState("");
 
-  // const [randomSentences, setRandomSentences] = useState({
-  //   toshiba: generateParagraphs(toshiba, paraCount),
-  //   zenOfPython: generateParagraphs(zenOfPython, paraCount),
-  //   romeoAndJuliet: generateParagraphs(romeoAndJuliet, paraCount),
-  //   harryPotter: generateParagraphs(harryPotter, paraCount),
-  //   custom: generateParagraphs(custom, paraCount),
-  // });
+  const hugeText = {
+    toshiba: toshiba,
+    zenOfPython: zenOfPython,
+    romeoAndJuliet: romeoAndJuliet,
+    harryPotter: harryPotter,
+    custom: custom,
+  };
 
   const copyCurrentText = () => {
     setCopyText("Copied To Clipboard!");
@@ -91,9 +91,14 @@ function App() {
     return value.value;
   };
 
-  // useEffect(() => {
-  //   setDisplayText(generateParagraphs(choice, paraCount));
-  // }, [choice, paraCount]);
+  useEffect(() => {
+    if (choice) {
+      setDisplayText("....Loading");
+      getParagraph(hugeText[choice]);
+      // setDisplayText(generateParagraphs(choice, paraCount));
+    }
+    // console.log("choice was made");
+  }, [choice, paraCount]);
 
   // console.log("Choice", choice);
   // console.log("displayText", displayText);

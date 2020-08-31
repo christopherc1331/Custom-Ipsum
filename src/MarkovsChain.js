@@ -20,6 +20,8 @@ const generateParagraphs = (text, requestedNumOfParagraphs) => {
       upperArr.includes(secondLetter)
     ) {
       return 0;
+    } else if (upperArr.includes(firstLetter)) {
+      return 0;
     } else if (endSentChars.includes(lastLetter)) {
       return 1; // ===Stop===
     } else if (
