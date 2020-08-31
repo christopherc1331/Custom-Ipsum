@@ -294,10 +294,11 @@ const Right = styled.div`
 
 const ParagraphTopBar = styled.div`
   width: 80%;
-  padding-right: 10rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  h2 {
+    padding-left: 10rem;
+  }
 `;
 
 const CopyContainer = styled.div`
