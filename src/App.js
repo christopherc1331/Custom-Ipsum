@@ -27,15 +27,71 @@ function App() {
     setDisplayText(generateParagraphs(inputText, paraCount));
   };
 
-  const [choice, setChoice] = useState("");
+  const [choice, setChoice] = useState("toshiba");
+  const [choiceDesc, setChoiceDesc] = useState(
+    "TV - Operating Instructions (Toshiba)"
+  );
   const [custom, setCustom] = useState("");
 
-  const hugeText = {
-    toshiba: toshiba,
-    zenOfPython: zenOfPython,
-    romeoAndJuliet: romeoAndJuliet,
-    harryPotter: harryPotter,
-    custom: custom,
+  const textOptions = {
+    toshiba: {
+      text: toshiba,
+      desc: "TV - Operating Instructions (Toshiba)",
+    },
+    zenOfPython: {
+      text: zenOfPython,
+      desc: "Zen Of Python (Tim Peters)",
+    },
+    romeoAndJuliet: {
+      text: romeoAndJuliet,
+      desc: "The Tragedy of Romeo and Juliet (Shakespeare)",
+    },
+    harryPotter: {
+      text: harryPotter,
+      desc: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
+    },
+    custom: {
+      text: custom,
+      desc: "Custom Text (Your Choice!)",
+    },
+  };
+
+  const options = [
+    { value: "zenOfPython", label: "Zen Of Python (Tim Peters)" },
+    {
+      value: "harryPotter",
+      label: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
+    },
+    { value: "toshiba", label: "TV - Operating Instructions (Toshiba)" },
+    {
+      value: "romeoAndJuliet",
+      label: "The Tragedy of Romeo and Juliet (Shakespeare)",
+    },
+    {
+      value: "custom",
+      label: "Custom Text (Your Choice!)",
+    },
+  ];
+
+  const inputChangeHandler = (e) => {
+    setCustom(e.target.value);
+  };
+
+  const changeHandler = (value) => {
+    setChoice(value.value);
+    return value.value;
+  };
+
+  const submitForm = () => {
+    if (choice !== "custom") {
+      getParagraph(textOptions[choice]["text"]);
+    } else {
+      if (custom === "") {
+        window.alert("Please add some text to the 'Custom Text' box.");
+      } else {
+        getParagraph(textOptions[choice]["text"]);
+      }
+    }
   };
 
   const copyCurrentText = () => {
@@ -54,23 +110,6 @@ function App() {
     document.body.removeChild(el);
   };
 
-  const options = [
-    { value: "zenOfPython", label: "Zen Of Python (Tim Peters)" },
-    {
-      value: "harryPotter",
-      label: "Harry Potter and the Sorcerer's Stone (JK Rowling)",
-    },
-    { value: "toshiba", label: "TV - Operating Instructions (Toshiba)" },
-    {
-      value: "romeoAndJuliet",
-      label: "The Tragedy of Romeo and Juliet (Shakespeare) ",
-    },
-    {
-      value: "custom",
-      label: "Custom Text (Your Choice!) ",
-    },
-  ];
-
   const customStyles = {
     option: (provided) => ({
       ...provided,
@@ -81,27 +120,9 @@ function App() {
       ...provided,
       backgroundColor: "#f6f7ed",
       color: "#282626",
-      width: "58%",
+      width: "62%",
     }),
   };
-
-  const changeHandler = (value) => {
-    setChoice(value.value);
-    console.log("value being set |", value.value);
-    return value.value;
-  };
-
-  useEffect(() => {
-    if (choice) {
-      setDisplayText("....Loading");
-      getParagraph(hugeText[choice]);
-      // setDisplayText(generateParagraphs(choice, paraCount));
-    }
-    // console.log("choice was made");
-  }, [choice, paraCount]);
-
-  // console.log("Choice", choice);
-  // console.log("displayText", displayText);
 
   return (
     <Container>
@@ -133,11 +154,6 @@ function App() {
               <span>{`   ${paraCount}`}</span>
             </h2>
           </ParaControlContainer>
-          <Button type="Primary" onClick={() => getParagraph(displayText)}>
-            {`Generate ${
-              paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
-            }`}
-          </Button>
           <SelectContainer>
             <Select
               styles={customStyles}
@@ -145,13 +161,26 @@ function App() {
               onChange={(newVal) => changeHandler(newVal)}
             />
           </SelectContainer>
-          <CustomInput placeholder="Paste Custom Text Here!" />
+          <CustomInput
+            display={choice === "custom" ? "block" : "none"}
+            onChange={(e) => inputChangeHandler(e)}
+            value={custom}
+            placeholder="Paste Custom Text Here!"
+          />
+          <Button type="Primary" onClick={() => submitForm()}>
+            {`Generate ${
+              paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
+            }`}
+          </Button>
         </Controls>
         <Right>
-          <CopyContainer onClick={() => copyCurrentText()}>
-            <CopyOutlined style={{ fontSize: "30px" }} />
-            <h4>{copyText}</h4>
-          </CopyContainer>
+          <ParagraphTopBar>
+            <CopyContainer onClick={() => copyCurrentText()}>
+              <CopyOutlined style={{ fontSize: "30px" }} />
+              <h4>{copyText}</h4>
+            </CopyContainer>
+            <h2>{textOptions[choice]["desc"]}</h2>
+          </ParagraphTopBar>
           <ParagraphContainer>
             <Paragraphs>{displayText}</Paragraphs>
           </ParagraphContainer>
@@ -212,7 +241,7 @@ const Controls = styled.div`
   /* align-items: center; */
   button {
     max-width: 50%;
-    margin-left: 4rem;
+    margin-left: 7rem;
     margin-bottom: 4rem;
     background-color: #4b4b4c;
     color: #f6f4ec;
@@ -235,7 +264,8 @@ const Controls = styled.div`
 `;
 
 const SelectContainer = styled.div`
-  margin-left: 3.8rem;
+  margin-left: 7rem;
+  margin-bottom: 4rem;
 `;
 
 const ParaControlContainer = styled.div`
@@ -260,6 +290,14 @@ const Right = styled.div`
   height: 75vh;
   width: 55%;
   justify-self: flex-end;
+`;
+
+const ParagraphTopBar = styled.div`
+  width: 80%;
+  padding-right: 10rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const CopyContainer = styled.div`
@@ -303,31 +341,14 @@ const Paragraphs = styled.p`
   }
 `;
 
-const ParagraphSmallContainer = styled.div`
-  height: 13%;
-  padding: 1.25rem;
-  margin-right: 5rem;
-  margin-top: 4rem;
-
-  border: solid 3px #737373;
-  border-radius: 3px;
-  background-color: #f6f7ed;
-`;
-
 const CustomInput = styled.input`
+  display: ${(props) => props.display};
   width: 200px;
+  margin-left: 7rem;
+  margin-bottom: 4rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`;
-
-const ParagraphTest = styled.p`
-  white-space: nowrap;
-  height: 100%;
-  overflow: scroll;
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export default App;
