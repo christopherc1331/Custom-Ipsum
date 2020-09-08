@@ -44,11 +44,11 @@ function App() {
   const [paraCount, setParaCount] = useState(6);
   const [choice, setChoice] = useState("romeoAndJuliet");
   const [displayText, setDisplayText] = useState(
-    generateParagraphs(romeoAndJuliet, paraCount)
+    `Select an option from the drop down menu to get started`
   );
 
   const [copyText, setCopyText] = useState("Copy");
-  const [paraLabel, setParaLabel] = useState(textOptions[choice]["desc"]);
+  const [paraLabel, setParaLabel] = useState("");
   const [loading, setLoading] = useState(false);
 
   const options = [
@@ -86,8 +86,6 @@ function App() {
         );
       }
     }
-
-    // setDisplayText(generateParagraphs(textOptions[choice]["text"], paraCount));
   };
 
   const copyCurrentText = () => {
@@ -166,7 +164,12 @@ function App() {
             value={custom}
             placeholder="Paste Custom Text Here!"
           />
-          <Button type="Primary" onClick={() => submitForm()}>
+          <Button
+            type="Primary"
+            onClick={() => {
+              submitForm();
+            }}
+          >
             {`Generate ${
               paraCount > 1 ? "More Paragraphs" : "Another Paragraph"
             }`}
@@ -181,7 +184,11 @@ function App() {
             <h2>{paraLabel}</h2>
           </ParagraphTopBar>
           <ParagraphContainer>
-            {loading ? LoadingOutlined : <Paragraphs>{displayText}</Paragraphs>}
+            {loading ? (
+              <LoadingOutlined />
+            ) : (
+              <Paragraphs>{displayText}</Paragraphs>
+            )}
           </ParagraphContainer>
         </Right>
       </BodyContainer>
