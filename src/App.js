@@ -44,13 +44,11 @@ function App() {
   const [paraCount, setParaCount] = useState(6);
   const [choice, setChoice] = useState("romeoAndJuliet");
   const [displayText, setDisplayText] = useState(
-    generateParagraphs(textOptions[choice]["text"], paraCount)
+    generateParagraphs(romeoAndJuliet, paraCount)
   );
 
   const [copyText, setCopyText] = useState("Copy");
-  const getParagraph = (inputText) => {
-    setDisplayText(generateParagraphs(inputText, paraCount));
-  };
+  const [paraLabel, setParaLabel] = useState(textOptions[choice]["desc"]);
   const [loading, setLoading] = useState(false);
 
   const options = [
@@ -74,21 +72,22 @@ function App() {
     setCustom(e.target.value);
   };
 
-  const changeHandler = (value) => {
-    setChoice(value.value);
-    return value.value;
-  };
-
   const submitForm = () => {
     if (choice !== "custom") {
-      getParagraph(textOptions[choice]["text"]);
+      setDisplayText(
+        generateParagraphs(textOptions[choice]["text"], paraCount)
+      );
     } else {
       if (custom === "") {
         window.alert("Please add some text to the 'Custom Text' box.");
       } else {
-        getParagraph(textOptions[choice]["text"]);
+        setDisplayText(
+          generateParagraphs(textOptions[choice]["text"], paraCount)
+        );
       }
     }
+
+    // setDisplayText(generateParagraphs(textOptions[choice]["text"], paraCount));
   };
 
   const copyCurrentText = () => {
@@ -155,7 +154,10 @@ function App() {
             <Select
               styles={customStyles}
               options={options}
-              onChange={(newVal) => changeHandler(newVal)}
+              onChange={(newVal) => {
+                setChoice(newVal.value);
+                setParaLabel(newVal.label);
+              }}
             />
           </SelectContainer>
           <CustomInput
@@ -176,7 +178,7 @@ function App() {
               <CopyOutlined style={{ fontSize: "30px" }} />
               <h4>{copyText}</h4>
             </CopyContainer>
-            <h2>{textOptions[choice]["desc"]}</h2>
+            <h2>{paraLabel}</h2>
           </ParagraphTopBar>
           <ParagraphContainer>
             {loading ? LoadingOutlined : <Paragraphs>{displayText}</Paragraphs>}
