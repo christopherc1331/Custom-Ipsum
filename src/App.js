@@ -16,8 +16,18 @@ import { harryPotter } from "./harryPotter.js";
 import generateParagraphs from "./MarkovsChain";
 import { Button } from "antd";
 import Select from "react-select";
+import ReactGA from "react-ga";
 
 function App() {
+  const initializeReactGA = () => {
+    ReactGA.initialize("UA-177553957-1");
+    ReactGA.pageview("/homepage");
+  };
+
+  useEffect(() => {
+    initializeReactGA();
+  }, []);
+
   const [custom, setCustom] = useState("");
   const textOptions = {
     romeoAndJuliet: {
@@ -349,6 +359,7 @@ const Paragraphs = styled.p`
 `;
 
 const CustomInput = styled.input`
+  color: #282626;
   display: ${(props) => props.display};
   width: 200px;
   margin-left: 7rem;
@@ -356,6 +367,9 @@ const CustomInput = styled.input`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  placeholder {
+    color: #282626;
+  }
 `;
 
 export default App;
