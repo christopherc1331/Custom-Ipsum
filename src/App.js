@@ -133,7 +133,7 @@ function App() {
       <HeaderContainer>
         <Top>
           <h1>Custom Ipsum</h1>
-          <TextLoop>
+          <TextLoop width="100%" noWrap="false">
             <h3>Your new favorite text filler!</h3>
             <h3>Create gibberish that makes sense to you!</h3>
           </TextLoop>
@@ -208,14 +208,14 @@ function App() {
 
 const Container = styled.div`
   margin: 0 auto;
-  height: 100vh;
+  height: 100%;
   overflow-y: hidden;
 `;
 
 const HeaderContainer = styled.div`
   width: 100%;
-  min-height: 9rem;
-  margin-bottom: 1.5rem;
+  height: 30%;
+  /* margin-bottom: 1.5rem; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -231,25 +231,27 @@ const HeaderContainer = styled.div`
 
 const Top = styled.div`
   width: inherit;
-  min-height: 7.5rem;
+  height: 90%;
   padding: 0.75rem 0 0 1.5rem;
   background-color: #4b4b4c;
 `;
 const Bottom = styled.div`
   width: inherit;
-  min-height: 1.5rem;
+  height: 10%;
   background-color: #595958;
 `;
 const BodyContainer = styled.div`
+  width: 100%;
+  height: 70%;
   padding: 0 1.5rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
 `;
 
 const Controls = styled.div`
   width: 35%;
-  height: 70vh;
+  height: 100%;
   padding-top: 1rem;
   margin-right: 2rem;
   display: flex;
@@ -303,14 +305,14 @@ const CaretContainer = styled.div`
 const Right = styled.div`
   display: flex;
   flex-direction: column;
-  height: 75vh;
+  height: 100%;
   width: 55%;
   justify-self: flex-end;
 `;
 
 const ParagraphTopBar = styled.div`
   width: 80%;
-  height: 4rem;
+  height: 10%;
   display: flex;
   align-items: center;
   h2 {
