@@ -83,6 +83,7 @@ function App() {
   };
 
   const submitForm = () => {
+    // validation
     if (choice !== "custom") {
       setDisplayText(
         generateParagraphs(textOptions[choice]["text"], paraCount)
